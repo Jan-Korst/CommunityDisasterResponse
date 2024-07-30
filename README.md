@@ -1,1 +1,1 @@
-# CommunityDisasterResponse
+The CommunityDisasterResponse project is a back-end server built with Node.js and Express, focused on managing incidents and user interactions in times of crisis. This repository includes a TypeScript implementation that initializes the server, sets up critical routes for incident and user management, and integrates Socket.IO to enable real-time updates and communications. It serves as a robust platform for community-driven disaster response, facilitating efficient coordination and support among users during emergencies.
