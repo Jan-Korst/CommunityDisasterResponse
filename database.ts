@@ -1,6 +1,5 @@
-import { DataSource } from 'typeorm';
 import "reflect-metadata";
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { DataSource, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import dotenv from 'dotenv';
 
 dotenv.config();
