@@ -33,11 +33,14 @@ const initializeDatabase = async () => {
     console.log("Data Source has been initialized!");
   } catch (error) {
     console.error("Error during Data Source initialization:", error);
+    process.exit(1);
   }
 }
 
-const getRepository = (entity: any) => {
-  if (!AppDataSource.isInitialized) throw new Error("Database connection is not initialized.");
+const getRepository = <T>(entity: new () => T) => {
+  if (!AppDataSource.isInitialized) {
+    throw new Error("Database connection is not initialized. Make sure to initialize the database before accessing repositories.");
+  }
   return AppDataSource.getRepository(entity);
 }
 
