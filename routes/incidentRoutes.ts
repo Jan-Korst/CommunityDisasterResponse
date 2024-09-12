@@ -8,12 +8,12 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const handleUnexpectedError = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
     res.status(500).send('An unexpected error occurred.');
 };
 
-const checkValidId = (req: Request, res: Response, next: NextFunction) => {
+const validateIncidentId = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     if (!id || isNaN(Number(id))) {
         res.status(400).send('Invalid ID format. ID must be a number.');
@@ -22,7 +22,7 @@ const checkValidId = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-app.post('/incidents', (req: Request, res: Response) => {
+app.post('/incidents', (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log('Creating an incident...');
         res.status(201).send('Incident created.');
@@ -31,7 +31,7 @@ app.post('/incidents', (req: Request, res: Response) => {
     }
 });
 
-app.get('/incidents', (req: Request, res: Response) => {
+app.get('/incidents', (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log('Retrieving all incidents...');
         res.status(200).send('All incidents retrieved.');
@@ -40,7 +40,7 @@ app.get('/incidents', (req: Request, res: Response) => {
     }
 });
 
-app.get('/incidents/:id', checkValidId, (req: Request, res: Response) => {
+app.get('/incidents/:id', validateIncidentId, (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         console.log(`Retrieving incident with ID: ${id}`);
@@ -50,7 +50,7 @@ app.get('/incidents/:id', checkValidId, (req: Request, res: Response) => {
     }
 });
 
-app.put('/incidents/:id', checkValidId, (req: Request, res: Response) => {
+app.put('/incidents/:id', validateIncidentId, (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         console.log(`Updating incident with ID: ${id}`);
@@ -60,7 +60,7 @@ app.put('/incidents/:id', checkValidId, (req: Request, res: Response) => {
     }
 });
 
-app.delete('/incidents/:id', checkValidId, (req: Request, res: Response) => {
+app.delete('/incidents/:id', validateIncidentId, (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         console.log(`Deleting incident with ID: ${id}`);
@@ -70,7 +70,7 @@ app.delete('/incidents/:id', checkValidId, (req: Request, res: Response) => {
     }
 });
 
-app.use(errorHandler);
+app.use(handleUnexpectedError);
 
 app.listen(port, () => {
     console.log(`Incident management server running on port ${port}`);
