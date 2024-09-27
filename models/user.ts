@@ -1,46 +1,46 @@
 import { config } from 'dotenv';
 config();
 
-interface UserDetails {
+interface IUserDetails {
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
 }
 
-interface UserAuthentication {
+interface IUserCredentials {
   username: string;
   passwordHash: string;
 }
 
-interface IncidentAssociation {
+interface IIncidentRecord {
   incidentId: string;
   date: Date;
   description: string;
 }
 
-class User {
-  details: UserDetails;
-  authentication: UserAuthentication;
-  incidents: IncidentAssociation[];
+class CommunityMember {
+  personalDetails: IUserDetails;
+  credentials: IUserCredentials;
+  relatedIncidents: IIncidentRecord[];
 
-  constructor(details: UserDetails, authentication: UserAuthentication, incidents: IncidentAssociation[] = []) {
-    this.details = details;
-    this.authentication = authentication;
-    this.incidents = incidents;
+  constructor(personalDetails: IUserDetails, credentials: IUserCredentials, relatedIncidents: IIncidentRecord[] = []) {
+    this.personalDetails = personalDetails;
+    this.credentials = credentials;
+    this.relatedIncidents = relatedIncidents;
   }
 
-  addIncident(incident: IncidentAssociation) {
-    this.incidents.push(incident);
+  appendIncident(incidentRecord: IIncidentRecord) {
+    this.relatedIncidents.push(incidentRecord);
   }
 
-  getFullName(): string {
-    return `${this.details.firstName} ${this.details.lastName}`;
+  retrieveFullName(): string {
+    return `${this.personalDetails.firstName} ${this.personalDetails.lastName}`;
   }
 
-  authenticate(username: string, passwordHash: string): boolean {
-    return this.authentication.username === username && this.authentication.passwordHash === passwordHash;
+  verifyAuthentication(providedUsername: string, providedPasswordHash: string): boolean {
+    return this.credentials.username === providedUsername && this.credentials.passwordHash === providedPasswordHash;
   }
 }
 
-export { UserDetails, UserAuthentication, IncidentAssociation, User };
+export { IUserDetails, IUserCredentials, IIncidentRecord, CommunityMember };
