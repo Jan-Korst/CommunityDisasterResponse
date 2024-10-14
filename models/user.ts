@@ -1,46 +1,46 @@
 import { config } from 'dotenv';
 config();
 
-interface IUserDetails {
+interface IPersonalDetails {
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
 }
 
-interface IUserCredentials {
+interface ILoginCredentials {
   username: string;
-  passwordHash: string;
+  hashedPassword: string;
 }
 
-interface IIncidentRecord {
+interface IIncidentDetails {
   incidentId: string;
-  date: Date;
-  description: string;
+  incidentDate: Date;
+  incidentDescription: string;
 }
 
-class CommunityMember {
-  personalDetails: IUserDetails;
-  credentials: IUserCredentials;
-  relatedIncidents: IIncidentRecord[];
+class CommunityMemberProfile {
+  personalInfo: IPersonalDetails;
+  loginInfo: ILoginCredentials;
+  incidentRecords: IIncidentDetails[];
 
-  constructor(personalDetails: IUserDetails, credentials: IUserCredentials, relatedIncidents: IIncidentRecord[] = []) {
-    this.personalDetails = personalDetails;
-    this.credentials = credentials;
-    this.relatedIncidents = relatedIncidents;
+  constructor(personalInfo: IPersonalDetails, loginInfo: ILoginCredentials, incidentRecords: IIncidentDetails[] = []) {
+    this.personalInfo = personalInfo;
+    this.loginInfo = loginInfo;
+    this.incidentRecords = incidentRecords;
   }
 
-  appendIncident(incidentRecord: IIncidentRecord) {
-    this.relatedIncidents.push(incidentRecord);
+  addIncident(incidentDetail: IIncidentDetails) {
+    this.incidentRecords.push(incidentDetail);
   }
 
-  retrieveFullName(): string {
-    return `${this.personalDetails.firstName} ${this.personalDetails.lastName}`;
+  getFullName(): string {
+    return `${this.personalInfo.firstName} ${this.personalInfo.lastName}`;
   }
 
-  verifyAuthentication(providedUsername: string, providedPasswordHash: string): boolean {
-    return this.credentials.username === providedUsername && this.credentials.passwordHash === providedPasswordHash;
+  isAuthenticated(username: string, hashedPassword: string): boolean {
+    return this.loginInfo.username === username && this.loginInfo.hashedPassword === hashedPassword;
   }
 }
 
-export { IUserDetails, IUserCredentials, IIncidentRecord, CommunityMember };
+export { IPersonalDetails, ILoginCredentials, IIncidentDetails, CommunityMemberProfile };
