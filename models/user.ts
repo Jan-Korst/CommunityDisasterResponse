@@ -23,6 +23,7 @@ class CommunityMemberProfile {
   personalInfo: IPersonalDetails;
   loginInfo: ILoginCredentials;
   incidentRecords: IIncidentDetails[];
+  private fullNameCache: string | null = null; 
 
   constructor(personalInfo: IPersonalDetails, loginInfo: ILoginCredentials, incidentRecords: IIncidentDetails[] = []) {
     this.personalInfo = personalInfo;
@@ -31,11 +32,15 @@ class CommunityMemberProfile {
   }
 
   addIncident(incidentDetail: IIncidentDetails) {
-    this.incidentRecords.push(incidentDetail);
+    this.incidentRecords.push(incidentDetail); 
   }
 
   getFullName(): string {
-    return `${this.personalInfo.firstName} ${this.personalInfo.lastName}`;
+    if (this.fullNameCache !== null) {
+      return this.fullNameCache;
+    }
+    this.fullNameCache = `${this.personalInfo.firstName} ${this.personalInfo.lastName}`; 
+    return this.fullNameCache;
   }
 
   isAuthenticated(username: string, hashedPassword: string): boolean {
