@@ -4,7 +4,7 @@ dotenv.config();
 enum Severity {
     Low = 'Low',
     Medium = 'Medium',
-    High = 'High',
+    High = 'High'
 }
 
 interface Location {
@@ -21,4 +21,4 @@ interface Incident {
 
 const API_KEY: string = process.env.API_KEY || '';
 
-export { Incident, Location, Severity };
+export { Incident, Location, Severity, API_KEY };
