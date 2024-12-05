@@ -1,19 +1,24 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
+
 const BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
+
 interface UserCredentials {
   email: string;
   password: string;
 }
-interface RegistrationDetails extends UserCredentials {
-  name: string;
+
+interface RegistrationData extends UserCredentials {
+  fullName: string; 
 }
-interface AuthResponse {
-  token: string;
+
+interface AuthenticationResponse {
+  authToken: string; 
   userId: string;
 }
-async function registerUser(details: RegistrationDetails): Promise<AuthResponse | null> {
+
+async function registerNewUser(details: RegistrationData): Promise<AuthenticationResponse | null> {
   try {
     const response = await axios.post(`${BASE_URL}/register`, details);
     return response.data;
@@ -22,7 +27,8 @@ async function registerUser(details: RegistrationDetails): Promise<AuthResponse 
     return null;
   }
 }
-async function loginUser(credentials: UserCredentials): Promise<AuthResponse | null> {
+
+async function loginUserWithCredentials(credentials: UserCredentials): Promise<AuthenticationResponse | null> {
   try {
     const response = await axios.post(`${BASE_URL}/login`, credentials);
     return response.data;
@@ -31,10 +37,13 @@ async function loginUser(credentials: UserCredentials): Promise<AuthResponse | n
     return null;
   }
 }
-function saveSession(token: string): void {
-  localStorage.setItem('authToken', token);
+
+function storeUserSession(authToken: string): void {
+  localStorage.setItem('userAuthToken', authToken); 
 }
-function getSessionToken(): string | null {
-  return localStorage.getItem('authToken');
+
+function retrieveUserSessionToken(): string | null {
+  return localStorage.getItem('userAuthToken');
 }
-export { registerUser, loginUser, saveSession, getSessionToken };
+
+export { registerNewUser, loginUserWithCredentials, storeUserSession, retrieveUserSessionToken };
