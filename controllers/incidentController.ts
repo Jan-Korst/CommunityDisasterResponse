@@ -8,53 +8,41 @@ interface Incident {
 }
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-
 const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
+const handleAxiosError = (error: any) => {
+  console.error(error.message || 'An unknown error occurred');
+  throw new Error('A problem occurred with the request');
+};
+
 const createIncident = async (incident: Incident) => {
-  try {
-    const response = await axiosInstance.post('/incidents', incident);
-    return response.data;
-  } catch (error) {
-    throw new Error('Error creating the incident');
-  }
+  return processRequest(() => axiosInstance.post('/incidents', incident));
 };
 
 const getAllIncidents = async () => {
-  try {
-    const response = await axiosInstance.get('/incidents');
-    return response.data;
-  } catch (error) {
-    throw new Error('Error fetching incidents');
-  }
+  return processRequest(() => axiosInstance.get('/incidents'));
 };
 
 const getIncidentById = async (id: number) => {
-  try {
-    const response = await axiosInstance.get(`/incidents/${id}`);
-    return response.data;
-  } catch (error) {
-    throw new Error('Error fetching the incident');
-  }
+  return processRequest(() => axiosInstance.get(`/incidents/${id}`));
 };
 
 const updateIncident = async (id: number, incident: Partial<Incident>) => {
-  try {
-    const response = await axiosInstance.put(`/incidents/${id}`, incident);
-    return response.data;
-  } catch (error) {
-    throw new Error('Error updating the incident');
-  }
+  return processRequest(() => axiosInstance.put(`/incidents/${id}`, incident));
 };
 
 const deleteIncident = async (id: number) => {
+  return processRequest(() => axiosInstance.delete(`/incidents/${id}`));
+};
+
+const processRequest = async (requestFunction: () => Promise<any>) => {
   try {
-    const response = await axiosInstance.delete(`/incidents/${id}`);
+    const response = await requestFunction();
     return response.data;
   } catch (error) {
-    throw new Error('Error deleting the incident');
+    handleAxiosError(error);
   }
 };
 
