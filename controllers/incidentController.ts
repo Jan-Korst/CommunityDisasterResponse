@@ -25,6 +25,10 @@ const getAllIncidents = async () => {
   return processRequest(() => axiosInstance.get('/incidents'));
 };
 
+const getIncidentsByStatus = async (status: 'open' | 'closed') => {
+  return processRequest(() => axiosInstance.get(`/incidents?status=${status}`));
+}
+
 const getIncidentById = async (id: number) => {
   return processRequest(() => axiosInstance.get(`/incidents/${id}`));
 };
@@ -42,8 +46,8 @@ const processRequest = async (requestFunction: () => Promise<any>) => {
     const response = await requestFunction();
     return response.data;
   } catch (error) {
-    handleAxiosError(error);
+  handleAxiosError(error);
   }
 };
 
-export { createIncident, getAllIncidents, getIncidentById, updateIncident, deleteIncident };
+export { createIncident, getAllIncidents, getIncidentById, updateIncident, deleteIncident, getIncidentsByStatus };
